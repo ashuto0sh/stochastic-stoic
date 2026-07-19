@@ -1,0 +1,43 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostList from "../../components/PostList.astro";
+import {
+  CATEGORY_LABELS,
+  getPublishedPosts,
+  sortByDateDesc,
+  type Category,
+} from "../../lib/posts";
+
+export async function getStaticPaths() {
+  const posts = sortByDateDesc(await getPublishedPosts());
+  return (Object.keys(CATEGORY_LABELS) as Category[]).map((category) => ({
+    params: { category },
+    props: {
+      category,
+      posts: posts.filter((post) => post.data.category === category),
+    },
+  }));
+}
+
+const { category, posts } = Astro.props;
+const label = CATEGORY_LABELS[category];
+---
+
+<BaseLayout
+  title={`${label} — Stochastic Stoic`}
+  description={`Posts filed under ${label}.`}
+>
+  <header class="archive-header">
+    <h1>{label}</h1>
+    <p class="post-meta">
+      {posts.length} {posts.length === 1 ? "post" : "posts"}
+    </p>
+  </header>
+  {
+    posts.length > 0 ? (
+      <PostList posts={posts} />
+    ) : (
+      <p class="intro">Nothing here yet.</p>
+    )
+  }
+</BaseLayout>

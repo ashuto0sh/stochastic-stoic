@@ -1,0 +1,77 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import CodeBlocks from "../components/CodeBlocks.astro";
+import Giscus from "../components/Giscus.astro";
+import { CATEGORY_LABELS, formatDate, type Category } from "../lib/posts";
+// Self-hosted KaTeX CSS as a hashed asset URL; linked only when `math: true`.
+import katexCssUrl from "katex/dist/katex.min.css?url";
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  updatedDate?: Date | undefined;
+  category: Category;
+  tags: string[];
+  math?: boolean;
+  ogImage?: string | undefined;
+}
+
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  category,
+  tags,
+  math,
+  ogImage,
+} = Astro.props;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogImage={ogImage}
+  article={{ pubDate, updatedDate, tags }}
+>
+  {math && <link rel="stylesheet" href={katexCssUrl} slot="head" />}
+  <article>
+    <header class="post-header">
+      <p class="post-meta">
+        <a href={`/categories/${category}/`}>{CATEGORY_LABELS[category]}</a>
+        {" · "}
+        <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+        {
+          updatedDate && (
+            <>
+              {" · Updated "}
+              <time datetime={updatedDate.toISOString()}>
+                {formatDate(updatedDate)}
+              </time>
+            </>
+          )
+        }
+      </p>
+      <h1>{title}</h1>
+    </header>
+    <div class="prose">
+      <slot />
+    </div>
+    {
+      tags.length > 0 && (
+        <footer class="post-tags">
+          <ul>
+            {tags.map((tag) => (
+              <li>
+                <a href={`/tags/${tag}/`}>#{tag}</a>
+              </li>
+            ))}
+          </ul>
+        </footer>
+      )
+    }
+  </article>
+  <Giscus />
+  <CodeBlocks />
+</BaseLayout>

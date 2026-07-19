@@ -1,0 +1,155 @@
+---
+/**
+ * Three-state theme control: System → Light → Dark → System.
+ * "System" removes the localStorage key and tracks the OS preference live
+ * (the media-query listener lives in BaseHead's inline script).
+ */
+---
+
+<button
+  id="theme-toggle"
+  type="button"
+  data-mode="system"
+  aria-label="Theme: system. Switch to light."
+>
+  <svg
+    class="icon-system"
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <rect x="2" y="3" width="20" height="14" rx="2"></rect>
+    <path d="M8 21h8m-4-4v4"></path>
+  </svg>
+  <svg
+    class="icon-sun"
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <circle cx="12" cy="12" r="4"></circle>
+    <path
+      d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+    ></path>
+  </svg>
+  <svg
+    class="icon-moon"
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+  </svg>
+</button>
+
+<style>
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--color-text);
+    cursor: pointer;
+  }
+
+  button:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  svg {
+    display: none;
+  }
+
+  button[data-mode="system"] .icon-system {
+    display: inline;
+  }
+
+  button[data-mode="light"] .icon-sun {
+    display: inline;
+  }
+
+  button[data-mode="dark"] .icon-moon {
+    display: inline;
+  }
+</style>
+
+<script>
+  type Mode = "system" | "light" | "dark";
+
+  const NEXT: Record<Mode, Mode> = {
+    system: "light",
+    light: "dark",
+    dark: "system",
+  };
+
+  function currentMode(): Mode {
+    const stored = localStorage.getItem("theme");
+    return stored === "light" || stored === "dark" ? stored : "system";
+  }
+
+  function systemTheme(): "light" | "dark" {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  }
+
+  function render(button: HTMLElement, mode: Mode) {
+    button.dataset.mode = mode;
+    button.setAttribute(
+      "aria-label",
+      `Theme: ${mode}. Switch to ${NEXT[mode]}.`,
+    );
+  }
+
+  function init() {
+    const button = document.getElementById("theme-toggle");
+    if (!button) return;
+
+    render(button, currentMode());
+
+    button.addEventListener("click", () => {
+      const mode = NEXT[currentMode()];
+      if (mode === "system") {
+        localStorage.removeItem("theme");
+      } else {
+        localStorage.setItem("theme", mode);
+      }
+      const theme = mode === "system" ? systemTheme() : mode;
+      document.documentElement.setAttribute("data-theme", theme);
+      window.dispatchEvent(
+        new CustomEvent("themechange", { detail: { theme } }),
+      );
+      render(button, mode);
+    });
+  }
+
+  init();
+  document.addEventListener("astro:after-swap", init);
+</script>

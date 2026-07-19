@@ -1,0 +1,39 @@
+---
+import BaseHead, { type ArticleMeta } from "../components/BaseHead.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string | undefined;
+  article?: ArticleMeta | undefined;
+}
+
+const { title, description, ogImage, article } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <BaseHead
+      title={title}
+      description={description}
+      ogImage={ogImage}
+      article={article}
+    />
+    <slot name="head" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav aria-label="Main">
+        <a href="/" class="site-title">Stochastic Stoic</a>
+        <ThemeToggle />
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <p>&copy; {new Date().getFullYear()} Stochastic Stoic</p>
+    </footer>
+  </body>
+</html>

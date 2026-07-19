@@ -1,0 +1,108 @@
+---
+/**
+ * Progressive enhancement for markdown code blocks: wraps each
+ * `pre.astro-code`, adds a language label and a copy-to-clipboard button.
+ */
+---
+
+<script>
+  function enhanceCodeBlocks() {
+    document
+      .querySelectorAll<HTMLPreElement>("pre.astro-code")
+      .forEach((pre) => {
+        if (pre.parentElement?.classList.contains("code-block")) return;
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "code-block";
+        pre.replaceWith(wrapper);
+        wrapper.appendChild(pre);
+
+        const toolbar = document.createElement("div");
+        toolbar.className = "code-block-toolbar";
+
+        const language = pre.dataset.language;
+        if (language && language !== "plaintext") {
+          const label = document.createElement("span");
+          label.className = "code-block-lang";
+          label.textContent = language;
+          toolbar.appendChild(label);
+        }
+
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "code-block-copy";
+        button.textContent = "Copy";
+        button.setAttribute("aria-label", "Copy code to clipboard");
+        button.addEventListener("click", async () => {
+          const code = pre.querySelector("code")?.innerText ?? "";
+          try {
+            await navigator.clipboard.writeText(code);
+            button.textContent = "Copied!";
+          } catch {
+            button.textContent = "Failed";
+          }
+          setTimeout(() => {
+            button.textContent = "Copy";
+          }, 2000);
+        });
+        toolbar.appendChild(button);
+
+        wrapper.appendChild(toolbar);
+      });
+  }
+
+  enhanceCodeBlocks();
+  document.addEventListener("astro:after-swap", enhanceCodeBlocks);
+</script>
+
+<style is:global>
+  .code-block {
+    position: relative;
+  }
+
+  .code-block-toolbar {
+    position: absolute;
+    top: var(--space-2);
+    right: var(--space-2);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+  }
+
+  .code-block-lang {
+    color: #8b949e;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    user-select: none;
+  }
+
+  .code-block-copy {
+    padding: 0.2em 0.6em;
+    border: 1px solid #444c56;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.35);
+    color: #adbac7;
+    font: inherit;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  .code-block:hover .code-block-copy,
+  .code-block-copy:focus-visible {
+    opacity: 1;
+  }
+
+  @media (hover: none) {
+    .code-block-copy {
+      opacity: 1;
+    }
+  }
+
+  .code-block-copy:hover {
+    color: #ffffff;
+    border-color: #768390;
+  }
+</style>

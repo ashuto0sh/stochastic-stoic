@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostList from "../components/PostList.astro";
+import {
+  CATEGORY_LABELS,
+  getPublishedPosts,
+  sortByDateDesc,
+  type Category,
+} from "../lib/posts";
+
+const posts = sortByDateDesc(await getPublishedPosts());
+const categories = Object.keys(CATEGORY_LABELS) as Category[];
+---
+
+<BaseLayout
+  title="Stochastic Stoic"
+  description="Essays on philosophy, mathematics, and software engineering."
+>
+  <p class="intro">
+    Essays on philosophy, mathematics, software engineering — and the
+    occasional rant.
+  </p>
+  <nav class="category-nav" aria-label="Categories">
+    <ul>
+      {
+        categories.map((category) => (
+          <li>
+            <a href={`/categories/${category}/`}>
+              {CATEGORY_LABELS[category]}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+  <PostList posts={posts} />
+</BaseLayout>

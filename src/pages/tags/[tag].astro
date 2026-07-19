@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostList from "../../components/PostList.astro";
+import { getPublishedPosts, sortByDateDesc } from "../../lib/posts";
+
+export async function getStaticPaths() {
+  const posts = sortByDateDesc(await getPublishedPosts());
+  const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
+  return tags.map((tag) => ({
+    params: { tag },
+    props: {
+      tag,
+      posts: posts.filter((post) => post.data.tags.includes(tag)),
+    },
+  }));
+}
+
+const { tag, posts } = Astro.props;
+---
+
+<BaseLayout
+  title={`#${tag} — Stochastic Stoic`}
+  description={`Posts tagged with ${tag}.`}
+>
+  <header class="archive-header">
+    <h1>#{tag}</h1>
+    <p class="post-meta">
+      {posts.length} {posts.length === 1 ? "post" : "posts"}
+    </p>
+  </header>
+  <PostList posts={posts} />
+</BaseLayout>
