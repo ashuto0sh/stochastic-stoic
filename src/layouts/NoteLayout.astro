@@ -1,0 +1,55 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import CodeBlocks from "../components/CodeBlocks.astro";
+import { formatDate } from "../lib/posts";
+// Notes are math-heavy across the board, so KaTeX CSS loads unconditionally.
+import katexCssUrl from "katex/dist/katex.min.css?url";
+
+interface Props {
+  title: string;
+  description?: string | undefined;
+  tags?: string[];
+  created?: Date | undefined;
+}
+
+const { title, description, tags = [], created } = Astro.props;
+const metaDescription =
+  description ?? `${title} — notes from the machine-learning Zettelkasten.`;
+---
+
+<BaseLayout title={`${title} — Notes`} description={metaDescription}>
+  <link rel="stylesheet" href={katexCssUrl} slot="head" />
+  <article>
+    <header class="post-header">
+      <p class="post-meta">
+        <a href="/notes/">Notes</a>
+        {
+          created && (
+            <>
+              {" · "}
+              <time datetime={created.toISOString()}>{formatDate(created)}</time>
+            </>
+          )
+        }
+      </p>
+      <h1>{title}</h1>
+    </header>
+    <div class="prose">
+      <slot />
+    </div>
+    {
+      tags.length > 0 && (
+        <footer class="post-tags">
+          <ul>
+            {tags.map((tag) => (
+              <li>
+                <span class="note-tag">#{tag}</span>
+              </li>
+            ))}
+          </ul>
+        </footer>
+      )
+    }
+  </article>
+  <CodeBlocks />
+</BaseLayout>

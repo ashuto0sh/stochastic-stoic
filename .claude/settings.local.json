@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(v=/home/ashutosh-tripathi/obsidian/ml; echo \"==== ml TREE ====\"; find \"$v\" -type d -not -path \"*/.obsidian*\" | sort; echo; echo \"==== ml FILES ====\"; find \"$v\" -name \"*.md\" -not -path \"*/.obsidian/*\" | sort)",
+      "Read(//home/ashutosh-tripathi/obsidian/ml/**)",
+      "Bash(v=/home/ashutosh-tripathi/obsidian/ml-maths-llm; echo \"==== ml-maths-llm TREE ====\"; find \"$v\" -type d -not -path \"*/.obsidian*\" | sort; echo; echo \"==== FILES ====\"; find \"$v\" -name \"*.md\" -not -path \"*/.obsidian/*\" | sort)",
+      "Read(//home/ashutosh-tripathi/obsidian/ml-maths-llm/**)",
+      "Bash(find '/home/ashutosh-tripathi/obsidian/ml/📂 01_Zettelkasten' -name *.md)",
+      "Bash(mise exec *)"
+    ]
+  }
+}

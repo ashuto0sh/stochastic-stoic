@@ -26,7 +26,27 @@ const { title, description, ogImage, article } = Astro.props;
     <header class="site-header">
       <nav aria-label="Main">
         <a href="/" class="site-title">Stochastic Stoic</a>
-        <ThemeToggle />
+        <div class="nav-right">
+          <ul class="nav-links">
+            <li>
+              <a
+                href="/"
+                aria-current={
+                  !Astro.url.pathname.startsWith("/notes") ? "page" : undefined
+                }>Posts</a
+              >
+            </li>
+            <li>
+              <a
+                href="/notes/"
+                aria-current={
+                  Astro.url.pathname.startsWith("/notes") ? "page" : undefined
+                }>Notes</a
+              >
+            </li>
+          </ul>
+          <ThemeToggle />
+        </div>
       </nav>
     </header>
     <main>

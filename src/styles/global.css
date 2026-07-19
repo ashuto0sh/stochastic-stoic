@@ -105,6 +105,8 @@ h1 { font-size: var(--text-h1); font-weight: 700; }
 h2 { font-size: var(--text-h2); font-weight: 650; }
 h3 { font-size: var(--text-h3); font-weight: 600; }
 h4 { font-size: var(--text-h4); font-weight: 600; }
+h5 { font-size: var(--text-base); font-weight: 600; }
+h6 { font-size: var(--text-sm); font-weight: 600; letter-spacing: 0.01em; }
 
 p {
   margin: 0;
@@ -193,6 +195,36 @@ video {
   color: var(--color-accent);
 }
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: var(--space-4);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+}
+
+.nav-links a {
+  color: var(--color-muted);
+  text-decoration: none;
+}
+
+.nav-links a:hover {
+  color: var(--color-accent);
+}
+
+.nav-links a[aria-current="page"] {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
 main {
   flex: 1;
   width: 100%;
@@ -254,6 +286,12 @@ main {
 .prose > h3,
 .prose > h4 {
   margin-block-start: var(--space-8);
+}
+
+.prose > h5,
+.prose > h6 {
+  margin-block-start: var(--space-8);
+  font-family: var(--font-sans);
 }
 
 .prose blockquote {
@@ -323,6 +361,50 @@ main {
   overflow-x: auto;
   overflow-y: hidden;
   padding-block: var(--space-2);
+}
+
+/* ============================================================
+   Callouts (Obsidian-style, rendered by remark-callouts)
+   ============================================================ */
+
+.prose .callout {
+  --callout-accent: var(--color-accent);
+  margin-inline: 0;
+  padding: var(--space-3) var(--space-4);
+  border-inline-start: 3px solid var(--callout-accent);
+  border-radius: 6px;
+  background-color: var(--color-code-bg);
+  font-style: normal;
+  color: var(--color-text);
+}
+
+.prose .callout > * + * {
+  margin-block-start: var(--space-3);
+}
+
+.callout-title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  color: var(--callout-accent);
+}
+
+details.callout > summary.callout-title {
+  cursor: pointer;
+}
+
+.prose [data-callout="tip"] { --callout-accent: #22713f; }
+.prose [data-callout="idea"] { --callout-accent: #7a5c0d; }
+.prose [data-callout="definition"] { --callout-accent: #64459c; }
+.prose [data-callout="ml-context"] { --callout-accent: #99461d; }
+
+:root[data-theme="dark"] .prose [data-callout="tip"] { --callout-accent: #7ecfa2; }
+:root[data-theme="dark"] .prose [data-callout="idea"] { --callout-accent: #d6b95c; }
+:root[data-theme="dark"] .prose [data-callout="definition"] { --callout-accent: #b39ddb; }
+:root[data-theme="dark"] .prose [data-callout="ml-context"] { --callout-accent: #d99a6c; }
+
+.note-tag {
+  color: var(--color-muted);
 }
 
 .prose table {
