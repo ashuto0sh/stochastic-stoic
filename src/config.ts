@@ -15,9 +15,9 @@ export const SITE = {
  */
 export const GISCUS = {
   repo: "ashuto0sh/stochastic-stoic",
-  repoId: "", // TODO: from giscus.app
+  repoId: "R_kgDOTdVn4g",
   category: "General",
-  categoryId: "", // TODO: from giscus.app
+  categoryId: "DIC_kwDOTdVn4s4DBhwz",
 };
 
 export const giscusConfigured = Boolean(GISCUS.repoId && GISCUS.categoryId);
