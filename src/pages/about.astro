@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Content as AboutContent, frontmatter } from "../content/about.md";
+---
+
+<BaseLayout
+  title="About — Stochastic Stoic"
+  description={frontmatter.description}
+>
+  <header class="archive-header">
+    <h1>About</h1>
+  </header>
+  <div class="prose">
+    <AboutContent />
+  </div>
+</BaseLayout>
