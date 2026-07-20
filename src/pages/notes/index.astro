@@ -1,18 +1,31 @@
 ---
-import { getEntry, render } from "astro:content";
-import NoteLayout from "../../layouts/NoteLayout.astro";
-import { TOC_ID } from "../../lib/notes";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getTopics } from "../../lib/notes";
 
-const toc = await getEntry("notes", TOC_ID);
-if (!toc) {
-  throw new Error(`Missing "${TOC_ID}" entry in the notes collection`);
-}
-const { Content } = await render(toc);
+const topics = await getTopics();
 ---
 
-<NoteLayout
-  title="Notes"
-  description="A Zettelkasten on the mathematics behind machine learning: linear algebra, matrix decompositions, calculus, and probability."
+<BaseLayout
+  title="Notes — Stochastic Stoic"
+  description="Working notes on things I'm learning, organized by topic."
 >
-  <Content />
-</NoteLayout>
+  <header class="archive-header">
+    <h1>Notes</h1>
+    <p class="post-meta">Working notes on things I'm learning, by topic.</p>
+  </header>
+  <ul class="post-list">
+    {
+      topics.map((topic) => (
+        <li>
+          <h3>
+            <a href={`/notes/${topic.slug}/`}>{topic.title}</a>
+          </h3>
+          <p class="post-meta">
+            {topic.notes.length} {topic.notes.length === 1 ? "note" : "notes"}
+          </p>
+          {topic.description && <p>{topic.description}</p>}
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>

@@ -18,7 +18,9 @@ import GithubSlugger, { slug as githubSlug } from "github-slugger";
 
 const VAULT = "/home/ashutosh-tripathi/obsidian/ml/📂 01_Zettelkasten";
 const VAULT_ROOT = "/home/ashutosh-tripathi/obsidian/ml";
-const OUT = "src/content/notes";
+// Topic folder this vault imports into (one topic per import run).
+const TOPIC = "mathematics-for-ml";
+const OUT = path.join("src/content/notes", TOPIC);
 const IMG_OUT = path.join(OUT, "images");
 
 const IMAGE_EXTS = new Set([".png", ".jpg", ".jpeg", ".svg", ".gif", ".webp"]);
@@ -185,7 +187,7 @@ function transformBody(note) {
         }
       }
       report.linksRewritten += 1;
-      return `[${display}](/notes/${slug}/${anchor})`;
+      return `[${display}](/notes/${TOPIC}/${slug}/${anchor})`;
     },
   );
 

@@ -1,17 +1,24 @@
 ---
 import { render } from "astro:content";
 import NoteLayout from "../../layouts/NoteLayout.astro";
-import { getConceptNotes } from "../../lib/notes";
+import { getConceptNotes, getTopics, topicOf } from "../../lib/notes";
 
 export async function getStaticPaths() {
-  const notes = await getConceptNotes();
+  const [notes, topics] = await Promise.all([getConceptNotes(), getTopics()]);
+  const topicTitles = new Map(topics.map((t) => [t.slug, t.title]));
   return notes.map((note) => ({
     params: { slug: note.id },
-    props: { note },
+    props: {
+      note,
+      topic: {
+        slug: topicOf(note),
+        title: topicTitles.get(topicOf(note)) ?? topicOf(note),
+      },
+    },
   }));
 }
 
-const { note } = Astro.props;
+const { note, topic } = Astro.props;
 const { Content } = await render(note);
 ---
 
@@ -20,6 +27,7 @@ const { Content } = await render(note);
   description={note.data.description}
   tags={note.data.tags}
   created={note.data.created}
+  topic={topic}
 >
   <Content />
 </NoteLayout>

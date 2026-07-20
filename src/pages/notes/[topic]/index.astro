@@ -1,0 +1,37 @@
+---
+import { render } from "astro:content";
+import NoteLayout from "../../../layouts/NoteLayout.astro";
+import { getTopics } from "../../../lib/notes";
+
+export async function getStaticPaths() {
+  const topics = await getTopics();
+  return topics.map((topic) => ({
+    params: { topic: topic.slug },
+    props: { topic },
+  }));
+}
+
+const { topic } = Astro.props;
+const Content = topic.toc ? (await render(topic.toc)).Content : null;
+---
+
+<NoteLayout
+  title={topic.title}
+  description={
+    topic.description ?? `Notes on ${topic.title}, organized by topic.`
+  }
+>
+  {
+    Content ? (
+      <Content />
+    ) : (
+      <ul>
+        {topic.notes.map((note) => (
+          <li>
+            <a href={`/notes/${note.id}/`}>{note.data.title}</a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</NoteLayout>

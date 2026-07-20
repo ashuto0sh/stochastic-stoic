@@ -10,11 +10,11 @@ interface Props {
   description?: string | undefined;
   tags?: string[];
   created?: Date | undefined;
+  topic?: { slug: string; title: string } | undefined;
 }
 
-const { title, description, tags = [], created } = Astro.props;
-const metaDescription =
-  description ?? `${title} — notes from the machine-learning Zettelkasten.`;
+const { title, description, tags = [], created, topic } = Astro.props;
+const metaDescription = description ?? `${title} — working notes.`;
 ---
 
 <BaseLayout title={`${title} — Notes`} description={metaDescription}>
@@ -23,6 +23,14 @@ const metaDescription =
     <header class="post-header">
       <p class="post-meta">
         <a href="/notes/">Notes</a>
+        {
+          topic && (
+            <>
+              {" · "}
+              <a href={`/notes/${topic.slug}/`}>{topic.title}</a>
+            </>
+          )
+        }
         {
           created && (
             <>

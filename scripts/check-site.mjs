@@ -20,8 +20,12 @@ function walk(dir, ext) {
 }
 
 const allPages = walk(DIST, ".html");
+// concept notes live at dist/notes/<topic>/<slug>/index.html (5 path
+// segments); the section index and per-topic hubs sit one level up
 const notePages = allPages.filter(
-  (p) => p.startsWith(path.join(DIST, "notes") + path.sep) && p !== path.join(DIST, "notes", "index.html"),
+  (p) =>
+    p.startsWith(path.join(DIST, "notes") + path.sep) &&
+    p.split(path.sep).length === 5,
 );
 
 // 1. no wikilink residue
