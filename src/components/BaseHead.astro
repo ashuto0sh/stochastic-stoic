@@ -19,7 +19,8 @@ interface Props {
 const { title, description, ogImage, article } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).href : undefined;
+// Every page has an OG image: its own, or the generated site-wide default.
+const ogImageUrl = new URL(ogImage ?? "/og/default.png", Astro.site).href;
 
 const jsonLd = article
   ? {
@@ -32,7 +33,7 @@ const jsonLd = article
       dateModified: (article.updatedDate ?? article.pubDate).toISOString(),
       author: { "@type": "Person", name: SITE.author },
       ...(article.tags.length > 0 && { keywords: article.tags.join(", ") }),
-      ...(ogImageUrl && { image: ogImageUrl }),
+      image: ogImageUrl,
     }
   : undefined;
 ---
@@ -58,7 +59,10 @@ const jsonLd = article
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
-{ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={title} />
 {
   article && (
     <meta
@@ -81,13 +85,10 @@ const jsonLd = article
   ))
 }
 
-<meta
-  name="twitter:card"
-  content={ogImageUrl ? "summary_large_image" : "summary"}
-/>
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-{ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+<meta name="twitter:image" content={ogImageUrl} />
 
 {jsonLd && (
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

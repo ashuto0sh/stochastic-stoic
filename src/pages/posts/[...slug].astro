@@ -23,7 +23,9 @@ const { Content } = await render(post);
   category={post.data.category}
   tags={post.data.tags}
   math={post.data.math}
-  ogImage={post.data.ogImage ?? post.data.heroImage}
+  ogImage={post.data.ogImage ??
+    post.data.heroImage ??
+    `/og/posts/${post.id}.png`}
 >
   <Content />
 </PostLayout>

@@ -20,6 +20,7 @@
     "unist-util-visit": "5.1.0"
   },
   "devDependencies": {
+    "astro-og-canvas": "0.13.0",
     "github-slugger": "2.0.0",
     "js-yaml": "4.3.0"
   }
