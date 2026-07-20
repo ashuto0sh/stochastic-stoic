@@ -15,6 +15,7 @@ interface Props {
   tags: string[];
   math?: boolean;
   ogImage?: string | undefined;
+  minutesRead?: number | undefined;
 }
 
 const {
@@ -26,6 +27,7 @@ const {
   tags,
   math,
   ogImage,
+  minutesRead,
 } = Astro.props;
 ---
 
@@ -52,6 +54,7 @@ const {
             </>
           )
         }
+        {minutesRead && ` · ${minutesRead} min read`}
       </p>
       <h1>{title}</h1>
     </header>

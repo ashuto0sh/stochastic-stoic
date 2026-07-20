@@ -5,12 +5,13 @@ import sitemap from "@astrojs/sitemap";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import remarkCallouts from "./src/lib/remark-callouts.mjs";
+import remarkReadingTime from "./src/plugins/remark-reading-time.mjs";
 
 export default defineConfig({
   site: "https://stochastic-stoic.in",
   integrations: [mdx(), sitemap()],
   markdown: {
-    remarkPlugins: [remarkMath, remarkCallouts],
+    remarkPlugins: [remarkMath, remarkCallouts, remarkReadingTime],
     // strict: false — the notes use Unicode ×/− inside math, which KaTeX's
     // default strict mode would warn about on every build.
     rehypePlugins: [[rehypeKatex, { strict: false }]],
