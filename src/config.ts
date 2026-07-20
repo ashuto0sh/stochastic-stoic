@@ -5,6 +5,15 @@ export const SITE = {
 };
 
 /**
+ * GoatCounter (privacy-friendly, cookieless pageview analytics).
+ * Requires a goatcounter.com account with this site code; until it exists
+ * the count request 404s harmlessly. Loaded in production builds only.
+ */
+export const GOATCOUNTER = {
+  endpoint: "https://stochastic-stoic.goatcounter.com/count",
+};
+
+/**
  * Giscus (GitHub Discussions comments).
  *
  * repoId and categoryId come from https://giscus.app once:

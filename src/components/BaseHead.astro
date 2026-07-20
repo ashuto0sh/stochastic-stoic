@@ -1,6 +1,6 @@
 ---
 import { Font } from "astro:assets";
-import { SITE } from "../config";
+import { GOATCOUNTER, SITE } from "../config";
 import "../styles/global.css";
 
 export interface ArticleMeta {
@@ -93,6 +93,18 @@ const jsonLd = article
 {jsonLd && (
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 )}
+
+{/* Pageview analytics: cookieless, async, harmless if blocked. Prod only. */}
+{
+  import.meta.env.PROD && (
+    <script
+      is:inline
+      data-goatcounter={GOATCOUNTER.endpoint}
+      async
+      src="//gc.zgo.at/count.js"
+    />
+  )
+}
 
 <Font cssVariable="--font-newsreader" preload />
 <Font cssVariable="--font-inter" />

@@ -14,6 +14,10 @@ because the world draws outcomes from distributions you don't control,
 *stoic* because the sane response is to govern the part that is yours: the
 policy, not the sample. **TODO:** adjust to taste.
 
+This site uses privacy-friendly, cookieless analytics
+([GoatCounter](https://www.goatcounter.com/)) — no trackers, no personal
+data.
+
 ## Elsewhere
 
 - GitHub: [github.com/TODO](https://github.com/TODO)
