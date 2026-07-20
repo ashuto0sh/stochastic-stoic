@@ -246,6 +246,14 @@ main {
   padding: var(--space-6) var(--page-pad);
 }
 
+.site-footer a {
+  color: inherit;
+}
+
+.site-footer a:hover {
+  color: var(--color-accent);
+}
+
 /* ============================================================
    Post
    ============================================================ */

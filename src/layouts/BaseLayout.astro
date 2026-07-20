@@ -64,7 +64,10 @@ const { title, description, ogImage, article } = Astro.props;
       <slot />
     </main>
     <footer class="site-footer">
-      <p>&copy; {new Date().getFullYear()} Stochastic Stoic</p>
+      <p>
+        &copy; {new Date().getFullYear()} Stochastic Stoic &middot;{" "}
+        <a href="/rss.xml">RSS</a>
+      </p>
     </footer>
   </body>
 </html>
