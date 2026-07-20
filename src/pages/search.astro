@@ -1,0 +1,69 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Search from "astro-pagefind/components/Search.astro";
+---
+
+<BaseLayout
+  title="Search — Stochastic Stoic"
+  description="Full-text search across posts and notes."
+>
+  <header class="archive-header">
+    <h1>Search</h1>
+  </header>
+  <noscript>
+    <p class="intro">Search requires JavaScript.</p>
+  </noscript>
+  <div class="search-wrap">
+    <Search id="search" uiOptions={{ showImages: false }} />
+  </div>
+</BaseLayout>
+
+<style is:global>
+  .search-wrap {
+    max-width: var(--measure);
+    margin-inline: auto;
+
+    /* Map Pagefind's UI variables onto the site tokens so the widget
+       follows light/dark automatically. */
+    --pagefind-ui-scale: 0.9;
+    --pagefind-ui-primary: var(--color-accent);
+    --pagefind-ui-text: var(--color-text);
+    --pagefind-ui-background: var(--color-bg);
+    --pagefind-ui-border: var(--color-border);
+    --pagefind-ui-tag: var(--color-code-bg);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 8px;
+    --pagefind-ui-font: var(--font-sans);
+  }
+
+  .search-wrap .pagefind-ui__result-title {
+    font-family: var(--font-serif);
+  }
+
+  .search-wrap .pagefind-ui__result-excerpt mark {
+    background: transparent;
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  // "/" focuses the search input — scoped to this page only.
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "/") return;
+    const target = event.target as HTMLElement | null;
+    if (
+      target instanceof HTMLInputElement ||
+      target instanceof HTMLTextAreaElement
+    ) {
+      return;
+    }
+    const input = document.querySelector<HTMLInputElement>(
+      ".pagefind-ui__search-input",
+    );
+    if (input) {
+      event.preventDefault();
+      input.focus();
+    }
+  });
+</script>

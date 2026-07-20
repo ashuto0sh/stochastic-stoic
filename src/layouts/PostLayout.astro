@@ -38,10 +38,16 @@ const {
   article={{ pubDate, updatedDate, tags }}
 >
   {math && <link rel="stylesheet" href={katexCssUrl} slot="head" />}
-  <article>
+  <article
+    data-pagefind-body
+    data-pagefind-filter="type:post"
+    data-pagefind-meta={`date:${(updatedDate ?? pubDate).toISOString().slice(0, 10)}`}
+  >
     <header class="post-header">
       <p class="post-meta">
-        <a href={`/categories/${category}/`}>{CATEGORY_LABELS[category]}</a>
+        <a href={`/categories/${category}/`} data-pagefind-filter="category">
+          {CATEGORY_LABELS[category]}</a
+        >
         {" · "}
         <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
         {

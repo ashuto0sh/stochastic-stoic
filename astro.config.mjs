@@ -2,6 +2,7 @@
 import { defineConfig, fontProviders } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
+import pagefind from "astro-pagefind";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import remarkCallouts from "./src/lib/remark-callouts.mjs";
@@ -9,7 +10,7 @@ import remarkReadingTime from "./src/plugins/remark-reading-time.mjs";
 
 export default defineConfig({
   site: "https://stochastic-stoic.in",
-  integrations: [mdx(), sitemap()],
+  integrations: [mdx(), sitemap(), pagefind()],
   markdown: {
     remarkPlugins: [remarkMath, remarkCallouts, remarkReadingTime],
     // strict: false — the notes use Unicode ×/− inside math, which KaTeX's

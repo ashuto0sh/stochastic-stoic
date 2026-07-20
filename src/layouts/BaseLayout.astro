@@ -33,7 +33,8 @@ const { title, description, ogImage, article } = Astro.props;
                 href="/"
                 aria-current={
                   !Astro.url.pathname.startsWith("/notes") &&
-                  !Astro.url.pathname.startsWith("/about")
+                  !Astro.url.pathname.startsWith("/about") &&
+                  !Astro.url.pathname.startsWith("/search")
                     ? "page"
                     : undefined
                 }>Posts</a
@@ -53,6 +54,14 @@ const { title, description, ogImage, article } = Astro.props;
                 aria-current={
                   Astro.url.pathname.startsWith("/about") ? "page" : undefined
                 }>About</a
+              >
+            </li>
+            <li>
+              <a
+                href="/search/"
+                aria-current={
+                  Astro.url.pathname.startsWith("/search") ? "page" : undefined
+                }>Search</a
               >
             </li>
           </ul>

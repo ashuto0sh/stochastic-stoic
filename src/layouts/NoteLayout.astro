@@ -11,15 +11,33 @@ interface Props {
   tags?: string[];
   created?: Date | undefined;
   topic?: { slug: string; title: string } | undefined;
+  /** Include this page in the Pagefind index (concept notes only). */
+  searchIndex?: boolean;
 }
 
-const { title, description, tags = [], created, topic } = Astro.props;
+const {
+  title,
+  description,
+  tags = [],
+  created,
+  topic,
+  searchIndex = false,
+} = Astro.props;
 const metaDescription = description ?? `${title} — working notes.`;
+const pagefindAttrs = searchIndex
+  ? {
+      "data-pagefind-body": true,
+      "data-pagefind-filter": "type:note",
+      ...(created && {
+        "data-pagefind-meta": `date:${created.toISOString().slice(0, 10)}`,
+      }),
+    }
+  : {};
 ---
 
 <BaseLayout title={`${title} — Notes`} description={metaDescription}>
   <link rel="stylesheet" href={katexCssUrl} slot="head" />
-  <article>
+  <article {...pagefindAttrs}>
     <header class="post-header">
       <p class="post-meta">
         <a href="/notes/">Notes</a>
